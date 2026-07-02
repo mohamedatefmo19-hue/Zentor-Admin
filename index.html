@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Zentor Admin - Teacher Approval</title>
+  <title>Zentor Admin - Teachers Management</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -17,7 +17,7 @@
       --text: #0b1e33; --text-dark: #eef2f6;
       --glass-bg: rgba(255,255,255,0.7); --glass-bg-dark: rgba(26,31,43,0.7);
       --shadow: 0 8px 32px rgba(0,0,0,0.08);
-      --transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+      --transition: all 0.3s ease;
     }
     body {
       font-family: 'Inter', sans-serif;
@@ -27,28 +27,23 @@
       transition: background 0.3s, color 0.3s;
     }
     body.dark { background: var(--bg-dark); color: var(--text-dark); }
-    .admin-container { width: 100%; max-width: 1050px; }
-
-    .login-card, .dashboard-card {
+    .container { width: 100%; max-width: 1200px; }
+    .card {
       background: var(--card); backdrop-filter: blur(20px);
       border-radius: 24px; padding: 40px;
       box-shadow: var(--shadow); border: 1px solid rgba(255,255,255,0.2);
       transition: background 0.3s, border 0.3s;
     }
-    body.dark .login-card,
-    body.dark .dashboard-card {
-      background: var(--card-dark); border-color: rgba(255,255,255,0.05);
-    }
-
+    body.dark .card { background: var(--card-dark); border-color: rgba(255,255,255,0.05); }
     .logo { text-align: center; margin-bottom: 30px; }
     .logo i { font-size: 44px; color: var(--primary); }
     .logo h1 { font-size: 30px; font-weight: 700; background: linear-gradient(135deg, #2a7de1, #6c5ce7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
     .form-group { margin-bottom: 20px; }
     .form-group label { display: block; font-weight: 500; margin-bottom: 8px; font-size: 14px; }
     .input-wrapper { position: relative; }
-    .input-wrapper i.left-icon { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: #aaa; }
+    .input-wrapper i { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: #aaa; }
     .input-wrapper input {
-      width: 100%; padding: 14px 44px 14px 44px; border: 1px solid #e0e5ec; border-radius: 12px;
+      width: 100%; padding: 14px 44px; border: 1px solid #e0e5ec; border-radius: 12px;
       font-size: 15px; background: rgba(255,255,255,0.8); backdrop-filter: blur(10px);
       transition: all 0.2s; color: inherit;
     }
@@ -56,7 +51,7 @@
       background: rgba(26,31,43,0.8); border-color: #2a3142; color: #eef2f6;
     }
     .input-wrapper input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(42,125,225,0.1); }
-    .toggle-password { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #aaa; }
+    .toggle-password { position: absolute; right: 16px; left: auto; cursor: pointer; }
     .btn {
       width: 100%; padding: 14px; border: none; border-radius: 12px;
       background: var(--primary); color: white; font-weight: 600; font-size: 16px;
@@ -65,46 +60,64 @@
     }
     .btn:hover { background: var(--primary-hover); }
     .error-message { color: #e74c3c; font-size: 13px; margin-top: 10px; display: none; }
-
-    .header-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 15px; }
-    .header-bar h2 { font-size: 22px; display: flex; align-items: center; gap: 8px; }
-    .logout-btn { background: none; border: 1px solid #e0e5ec; color: var(--text); padding: 8px 16px; border-radius: 30px; cursor: pointer; font-weight: 500; transition: background 0.2s; display: flex; align-items: center; gap: 6px; }
+    .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; flex-wrap: wrap; gap: 15px; }
+    .logout-btn {
+      background: none; border: 1px solid #e0e5ec; color: var(--text);
+      padding: 8px 20px; border-radius: 30px; cursor: pointer;
+      font-weight: 500; display: flex; align-items: center; gap: 8px;
+      transition: background 0.2s;
+    }
     body.dark .logout-btn { border-color: #2a3142; color: var(--text-dark); }
     .logout-btn:hover { background: rgba(0,0,0,0.04); }
-    body.dark .logout-btn:hover { background: rgba(255,255,255,0.04); }
-
-    table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    table { width: 100%; border-collapse: collapse; }
     th, td { text-align: left; padding: 14px 12px; border-bottom: 1px solid rgba(0,0,0,0.06); }
     body.dark th, body.dark td { border-color: rgba(255,255,255,0.06); }
     th { font-weight: 600; opacity: 0.7; font-size: 13px; }
-    .badge { padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; display: inline-block; }
+    .badge { padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
     .badge-success { background: #d4edda; color: #155724; }
     .badge-warning { background: #fff3cd; color: #856404; }
-    .action-btn { padding: 8px 16px; border-radius: 8px; border: none; cursor: pointer; font-weight: 500; transition: background 0.2s; margin-right: 6px; }
+    .action-btn {
+      padding: 6px 14px; border-radius: 8px; border: none;
+      cursor: pointer; font-weight: 500; font-size: 13px;
+      transition: background 0.2s; margin-right: 4px;
+    }
     .action-btn.approve { background: #2ecc71; color: white; }
     .action-btn.approve:hover { background: #27ae60; }
     .action-btn.reject { background: #e74c3c; color: white; }
     .action-btn.reject:hover { background: #c0392b; }
-
-    .skeleton { background: linear-gradient(90deg, rgba(0,0,0,0.04) 25%, rgba(0,0,0,0.08) 50%, rgba(0,0,0,0.04) 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 8px; }
+    .action-btn.delete { background: #ff7675; color: white; }
+    .action-btn.delete:hover { background: #d63031; }
+    .skeleton {
+      background: linear-gradient(90deg, rgba(0,0,0,0.04) 25%, rgba(0,0,0,0.08) 50%, rgba(0,0,0,0.04) 75%);
+      background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 8px;
+    }
     body.dark .skeleton { background: linear-gradient(90deg, rgba(255,255,255,0.04) 25%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.04) 75%); }
     @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
-
-    .toast { position: fixed; bottom: 30px; right: 30px; background: #ffffff; color: #0b1e33; padding: 16px 24px; border-radius: 12px; box-shadow: 0 12px 32px rgba(0,0,0,0.18); display: flex; align-items: center; gap: 12px; backdrop-filter: blur(20px); z-index: 10000; transform: translateY(120px); opacity: 0; transition: all 0.3s cubic-bezier(0.4,0,0.2,1); max-width: 350px; border-left: 4px solid var(--primary); }
+    .toast {
+      position: fixed; bottom: 30px; right: 30px; background: #ffffff;
+      color: #0b1e33; padding: 16px 24px; border-radius: 12px;
+      box-shadow: 0 12px 32px rgba(0,0,0,0.18); display: flex;
+      align-items: center; gap: 12px; backdrop-filter: blur(20px);
+      z-index: 10000; transform: translateY(120px); opacity: 0;
+      transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+      max-width: 350px; border-left: 4px solid var(--primary);
+    }
     body.dark .toast { background: #1a1f2b; color: #eef2f6; }
     .toast.show { transform: translateY(0); opacity: 1; }
     .toast.error { border-left-color: #e74c3c; }
     .toast.success { border-left-color: #2ecc71; }
-
     .toggles { position: absolute; top: 20px; right: 20px; display: flex; gap: 10px; }
-    .icon-btn { background: var(--glass-bg); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.2); border-radius: 30px; padding: 8px 16px; cursor: pointer; font-size: 14px; display: flex; align-items: center; gap: 6px; color: inherit; transition: background 0.3s; }
+    .icon-btn {
+      background: var(--glass-bg); backdrop-filter: blur(16px);
+      border: 1px solid rgba(255,255,255,0.2); border-radius: 30px;
+      padding: 8px 16px; cursor: pointer; font-size: 14px;
+      display: flex; align-items: center; gap: 6px; color: inherit;
+      transition: background 0.3s;
+    }
     body.dark .icon-btn { background: var(--glass-bg-dark); border-color: rgba(255,255,255,0.05); }
-
     @media (max-width: 768px) {
-      .login-card, .dashboard-card { padding: 25px; }
-      .toggles { top: 10px; right: 10px; flex-direction: column; }
-      table { font-size: 13px; }
-      th, td { padding: 10px 8px; }
+      .card { padding: 25px; }
+      table { display: block; overflow-x: auto; }
     }
   </style>
 </head>
@@ -115,28 +128,28 @@
     <button class="icon-btn" id="themeToggle"><i class="fas fa-moon"></i> <span>Dark</span></button>
   </div>
 
-  <div class="admin-container">
+  <div class="container">
     <!-- Login Form -->
-    <div id="loginSection" class="login-card">
+    <div id="loginSection" class="card">
       <div class="logo">
         <i class="fas fa-shield-alt"></i>
         <h1>Zentor Admin</h1>
-        <p data-lang="admin-subtitle">Teacher Approval Panel</p>
+        <p data-lang="admin-subtitle">Teachers Management</p>
       </div>
-      <form id="adminLoginForm">
+      <form id="loginForm">
         <div class="form-group">
           <label data-lang="email">Email</label>
           <div class="input-wrapper">
-            <i class="fas fa-envelope left-icon"></i>
+            <i class="fas fa-envelope"></i>
             <input type="email" id="adminEmail" placeholder="admin@gmail.com" required>
           </div>
         </div>
         <div class="form-group">
           <label data-lang="password">Password</label>
           <div class="input-wrapper">
-            <i class="fas fa-lock left-icon"></i>
+            <i class="fas fa-lock"></i>
             <input type="password" id="adminPassword" placeholder="••••••••" required>
-            <i class="toggle-password fas fa-eye" id="toggleAdminPassword"></i>
+            <i class="toggle-password fas fa-eye" id="togglePassword"></i>
           </div>
         </div>
         <div class="error-message" id="loginError"></div>
@@ -146,17 +159,17 @@
       </form>
     </div>
 
-    <!-- Dashboard Section -->
-    <div id="dashboardSection" class="dashboard-card" style="display: none;">
-      <div class="header-bar">
-        <h2><i class="fas fa-users-cog"></i> <span data-lang="teacher-registrations">Teacher Registrations</span></h2>
+    <!-- Dashboard -->
+    <div id="dashboardSection" class="card" style="display: none;">
+      <div class="header">
+        <h2><i class="fas fa-users-cog"></i> <span data-lang="teachers-list">Teachers List</span></h2>
         <div style="display:flex; align-items:center; gap:10px;">
           <button class="icon-btn" id="langToggleDash"><i class="fas fa-globe"></i> <span>AR</span></button>
           <button class="icon-btn" id="themeToggleDash"><i class="fas fa-moon"></i> <span>Dark</span></button>
           <button class="logout-btn" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> <span data-lang="logout">Logout</span></button>
         </div>
       </div>
-      <div id="teachersTableContainer"></div>
+      <div id="tableContainer"></div>
     </div>
   </div>
 
@@ -165,7 +178,7 @@
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
     import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
-    import { getFirestore, collection, getDocs, doc, setDoc, deleteDoc, query, collectionGroup, getDoc } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+    import { getFirestore, collection, getDocs, doc, getDoc, setDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyBOd-cHm8J84BMwdlP8a3zOVlK8sboUFj0",
@@ -188,62 +201,59 @@
       setTimeout(() => toast.classList.remove('show'), 5000);
     }
 
+    // Language & Theme
     let currentLang = localStorage.getItem('zentor_lang') || 'en';
     const langMap = {
       en: {
-        'admin-subtitle': 'Teacher Approval Panel', 'email': 'Email', 'password': 'Password',
-        'login': 'Login', 'logout': 'Logout', 'teacher-registrations': 'Teacher Registrations',
-        'loading': 'Loading...', 'no-teachers': 'No teacher registrations found.',
-        'error-loading': 'Failed to load teachers.', 'approve-success': 'Teacher activated successfully!',
-        'deactivate-success': 'Teacher deactivated.', 'operation-failed': 'Operation failed: ',
-        'invalid-credentials': 'Invalid email or password.', 'unauthorized': 'Unauthorized: Not an admin account.',
-        'welcome': 'Welcome, Admin!', 'logged-out': 'Logged out.', 'pending': 'Pending',
-        'activated': 'Activated', 'approve': 'Approve', 'deactivate': 'Deactivate'
+        'admin-subtitle': 'Teachers Management', 'email': 'Email', 'password': 'Password',
+        'login': 'Login', 'logout': 'Logout', 'teachers-list': 'Teachers List',
+        'loading': 'Loading...', 'no-teachers': 'No teachers registered yet.',
+        'error-loading': 'Failed to load teachers.', 'activate-success': 'Teacher activated!',
+        'deactivate-success': 'Teacher deactivated.', 'delete-success': 'Teacher deleted.',
+        'operation-failed': 'Operation failed: ', 'invalid-credentials': 'Invalid email or password.',
+        'unauthorized': 'Unauthorized.', 'pending': 'Pending', 'activated': 'Activated',
+        'activate': 'Activate', 'deactivate': 'Deactivate', 'delete': 'Delete'
       },
       ar: {
-        'admin-subtitle': 'لوحة تفعيل المعلمين', 'email': 'البريد الإلكتروني', 'password': 'كلمة المرور',
-        'login': 'تسجيل الدخول', 'logout': 'تسجيل الخروج', 'teacher-registrations': 'تسجيلات المعلمين',
+        'admin-subtitle': 'إدارة المعلمين', 'email': 'البريد الإلكتروني', 'password': 'كلمة المرور',
+        'login': 'تسجيل الدخول', 'logout': 'تسجيل الخروج', 'teachers-list': 'قائمة المعلمين',
         'loading': 'جاري التحميل...', 'no-teachers': 'لا يوجد معلمون مسجلون.',
-        'error-loading': 'فشل تحميل المعلمين.', 'approve-success': 'تم تفعيل المعلم بنجاح!',
-        'deactivate-success': 'تم تعطيل المعلم.', 'operation-failed': 'فشلت العملية: ',
-        'invalid-credentials': 'بريد إلكتروني أو كلمة مرور غير صحيحة.', 'unauthorized': 'غير مصرح: ليس حساب مسؤول.',
-        'welcome': 'مرحبًا بك أيها المسؤول!', 'logged-out': 'تم تسجيل الخروج.', 'pending': 'قيد الانتظار',
-        'activated': 'مفعل', 'approve': 'تفعيل', 'deactivate': 'تعطيل'
+        'error-loading': 'فشل تحميل المعلمين.', 'activate-success': 'تم تفعيل المعلم!',
+        'deactivate-success': 'تم تعطيل المعلم.', 'delete-success': 'تم حذف المعلم.',
+        'operation-failed': 'فشلت العملية: ', 'invalid-credentials': 'بيانات دخول خاطئة.',
+        'unauthorized': 'غير مصرح.', 'pending': 'قيد الانتظار', 'activated': 'مفعل',
+        'activate': 'تفعيل', 'deactivate': 'تعطيل', 'delete': 'حذف'
       }
     };
 
     function t(key) { return langMap[currentLang]?.[key] || key; }
-    function applyLanguageUI() {
+    function applyLanguage() {
       document.querySelectorAll('[data-lang]').forEach(el => el.textContent = t(el.getAttribute('data-lang')));
       document.querySelectorAll('#langToggle span, #langToggleDash span').forEach(s => s.textContent = currentLang === 'en' ? 'AR' : 'EN');
       document.documentElement.lang = currentLang;
       document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
       localStorage.setItem('zentor_lang', currentLang);
     }
-
     function applyTheme() {
-      const saved = localStorage.getItem('zentor_theme') || 'light';
-      const isDark = saved === 'dark';
-      document.body.classList.toggle('dark', isDark);
-      document.querySelectorAll('#themeToggle i, #themeToggleDash i').forEach(i => i.className = isDark ? 'fas fa-sun' : 'fas fa-moon');
-      document.querySelectorAll('#themeToggle span, #themeToggleDash span').forEach(s => s.textContent = isDark ? 'Light' : 'Dark');
+      const dark = localStorage.getItem('zentor_theme') === 'dark';
+      document.body.classList.toggle('dark', dark);
+      document.querySelectorAll('#themeToggle i, #themeToggleDash i').forEach(i => i.className = dark ? 'fas fa-sun' : 'fas fa-moon');
+      document.querySelectorAll('#themeToggle span, #themeToggleDash span').forEach(s => s.textContent = dark ? 'Light' : 'Dark');
     }
     function toggleTheme() {
-      const isDark = !document.body.classList.contains('dark');
-      document.body.classList.toggle('dark', isDark);
-      localStorage.setItem('zentor_theme', isDark ? 'dark' : 'light');
+      document.body.classList.toggle('dark');
+      localStorage.setItem('zentor_theme', document.body.classList.contains('dark') ? 'dark' : 'light');
       applyTheme();
     }
 
-    applyLanguageUI(); applyTheme();
-
-    document.getElementById('langToggle').addEventListener('click', ()=>{ currentLang = currentLang === 'en' ? 'ar' : 'en'; applyLanguageUI(); });
-    document.getElementById('langToggleDash').addEventListener('click', ()=>{ currentLang = currentLang === 'en' ? 'ar' : 'en'; applyLanguageUI(); });
+    applyLanguage(); applyTheme();
+    document.getElementById('langToggle').addEventListener('click', ()=>{ currentLang = currentLang==='en'?'ar':'en'; applyLanguage(); });
+    document.getElementById('langToggleDash').addEventListener('click', ()=>{ currentLang = currentLang==='en'?'ar':'en'; applyLanguage(); });
     document.getElementById('themeToggle').addEventListener('click', toggleTheme);
     document.getElementById('themeToggleDash').addEventListener('click', toggleTheme);
-    document.getElementById('toggleAdminPassword').addEventListener('click', function(){
+    document.getElementById('togglePassword').addEventListener('click', function(){
       const p = document.getElementById('adminPassword');
-      p.type = p.type === 'password' ? 'text' : 'password';
+      p.type = p.type==='password'?'text':'password';
       this.classList.toggle('fa-eye'); this.classList.toggle('fa-eye-slash');
     });
 
@@ -252,7 +262,8 @@
     const loginError = document.getElementById('loginError');
     const togglesBar = document.getElementById('togglesBar');
 
-    document.getElementById('adminLoginForm').addEventListener('submit', async (e) => {
+    // Login
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const email = document.getElementById('adminEmail').value.trim();
       const password = document.getElementById('adminPassword').value;
@@ -260,83 +271,120 @@
       const btn = document.getElementById('loginBtn');
       btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ' + t('loading');
       btn.disabled = true;
-
       try {
         const cred = await signInWithEmailAndPassword(auth, email, password);
         if (cred.user.email.toLowerCase() !== 'admin@gmail.com') {
           await signOut(auth);
           throw new Error('unauthorized');
         }
-        showToast(t('welcome'), 'success');
+        showToast('Welcome!', 'success');
       } catch (err) {
-        let msg = t('invalid-credentials');
-        if (err.code === 'auth/invalid-credential' || err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password') {
-          msg = t('invalid-credentials');
-        } else if (err.message === 'unauthorized') {
-          msg = t('unauthorized');
-        } else {
-          msg = err.message;
-        }
-        loginError.textContent = msg;
+        loginError.textContent = t('invalid-credentials');
         loginError.style.display = 'block';
-        showToast(msg, 'error');
+        showToast(t('invalid-credentials'), 'error');
       } finally {
         btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> ' + t('login');
         btn.disabled = false;
       }
     });
 
-    document.getElementById('logoutBtn').addEventListener('click', async () => await signOut(auth));
+    document.getElementById('logoutBtn').addEventListener('click', () => signOut(auth));
 
+    // Load all teachers
     async function loadTeachers() {
-      const container = document.getElementById('teachersTableContainer');
-      container.innerHTML = '<div class="skeleton" style="height:40px; width:100%; margin-bottom:12px;"></div>'.repeat(3);
+      const container = document.getElementById('tableContainer');
+      container.innerHTML = '<div class="skeleton" style="height:40px; width:100%; margin-bottom:12px;"></div>'.repeat(4);
       try {
-        const profileQuery = query(collectionGroup(db, 'profile'));
-        const snapshot = await getDocs(profileQuery);
+        const teachersSnap = await getDocs(collection(db, 'teachers'));
         const teachers = [];
-        for (const docSnap of snapshot.docs) {
-          const data = docSnap.data();
-          const teacherUid = docSnap.ref.path.split('/')[1];
-          const prefSnap = await getDoc(doc(db, `teachers/${teacherUid}/settings/preferences`));
-          teachers.push({
-            uid: teacherUid,
-            name: data.name || '---', email: data.email || '',
-            subject: data.subject || '---', grades: data.grades || [],
-            createdAt: data.createdAt || '', approved: prefSnap.exists()
-          });
+        
+        for (const teacherDoc of teachersSnap.docs) {
+          const uid = teacherDoc.id;
+          const profileSnap = await getDoc(doc(db, `teachers/${uid}/settings/profile`));
+          const prefSnap = await getDoc(doc(db, `teachers/${uid}/settings/preferences`));
+          
+          if (profileSnap.exists()) {
+            teachers.push({
+              uid,
+              ...profileSnap.data(),
+              approved: prefSnap.exists()
+            });
+          }
         }
+        
         teachers.sort((a,b) => (b.createdAt||'').localeCompare(a.createdAt||''));
+        
         if (!teachers.length) {
           container.innerHTML = `<div style="text-align:center; padding:40px; opacity:0.6;">${t('no-teachers')}</div>`;
           return;
         }
-        let html = `<table><thead><tr><th>Name</th><th>Email</th><th>Subject</th><th>Grades</th><th>Status</th><th>Actions</th></tr></thead><tbody>`;
+        
+        let html = `
+          <table>
+            <thead><tr>
+              <th>Name</th><th>Email</th><th>Subject</th><th>Grades</th>
+              <th>Status</th><th>Registered</th><th>Actions</th>
+            </tr></thead>
+            <tbody>
+        `;
+        
         teachers.forEach(t => {
-          const badge = t.approved ? `<span class="badge badge-success">${t('activated')}</span>` : `<span class="badge badge-warning">${t('pending')}</span>`;
-          const btn = t.approved ? `<button class="action-btn reject" data-uid="${t.uid}">${t('deactivate')}</button>` : `<button class="action-btn approve" data-uid="${t.uid}">${t('approve')}</button>`;
-          html += `<tr><td>${t.name}</td><td>${t.email}</td><td>${t.subject}</td><td>${t.grades.join(', ')||'---'}</td><td>${badge}</td><td>${btn}</td></tr>`;
+          const badge = t.approved
+            ? `<span class="badge badge-success">${t('activated')}</span>`
+            : `<span class="badge badge-warning">${t('pending')}</span>`;
+          const date = t.createdAt ? new Date(t.createdAt).toLocaleDateString() : '---';
+          const actions = t.approved
+            ? `<button class="action-btn reject" data-uid="${t.uid}">${t('deactivate')}</button>`
+            : `<button class="action-btn approve" data-uid="${t.uid}">${t('activate')}</button>`;
+          actions += `<button class="action-btn delete" data-uid="${t.uid}">${t('delete')}</button>`;
+          
+          html += `<tr>
+            <td>${t.name||'---'}</td>
+            <td>${t.email||'---'}</td>
+            <td>${t.subject||'---'}</td>
+            <td>${Array.isArray(t.grades)?t.grades.join(', '):'---'}</td>
+            <td>${badge}</td>
+            <td>${date}</td>
+            <td>${actions}</td>
+          </tr>`;
         });
+        
         html += '</tbody></table>';
         container.innerHTML = html;
-        document.querySelectorAll('.action-btn.approve').forEach(b => b.addEventListener('click', (e)=> toggleTeacherActivation(e.target.dataset.uid, true)));
-        document.querySelectorAll('.action-btn.reject').forEach(b => b.addEventListener('click', (e)=> toggleTeacherActivation(e.target.dataset.uid, false)));
+        
+        // Event listeners
+        container.querySelectorAll('.approve').forEach(b => b.addEventListener('click', (e) => toggleActivation(e.target.dataset.uid, true)));
+        container.querySelectorAll('.reject').forEach(b => b.addEventListener('click', (e) => toggleActivation(e.target.dataset.uid, false)));
+        container.querySelectorAll('.delete').forEach(b => b.addEventListener('click', (e) => deleteTeacher(e.target.dataset.uid)));
+        
       } catch (err) {
         console.error(err);
         container.innerHTML = `<div style="text-align:center; padding:40px; color:#e74c3c;">${t('error-loading')}</div>`;
         showToast(t('error-loading'), 'error');
       }
     }
-
-    async function toggleTeacherActivation(uid, activate) {
+    
+    async function toggleActivation(uid, activate) {
       const ref = doc(db, `teachers/${uid}/settings/preferences`);
       try {
         if (activate) await setDoc(ref, { activatedAt: new Date().toISOString() });
         else await deleteDoc(ref);
-        showToast(activate ? t('approve-success') : t('deactivate-success'), 'success');
+        showToast(activate ? t('activate-success') : t('deactivate-success'), 'success');
         loadTeachers();
       } catch (err) {
-        console.error(err);
+        showToast(t('operation-failed') + err.message, 'error');
+      }
+    }
+    
+    async function deleteTeacher(uid) {
+      if (!confirm('Are you sure you want to permanently delete this teacher and all their data?')) return;
+      try {
+        // Delete the entire teacher document (this will cascade delete all subcollections in Firestore)
+        await deleteDoc(doc(db, 'teachers', uid));
+        // Note: This does NOT delete the Firebase Auth user. You'll need to do that manually via Admin SDK or Firebase Console.
+        showToast(t('delete-success'), 'success');
+        loadTeachers();
+      } catch (err) {
         showToast(t('operation-failed') + err.message, 'error');
       }
     }
