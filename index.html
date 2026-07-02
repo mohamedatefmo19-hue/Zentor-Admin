@@ -11,82 +11,52 @@
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     :root {
-      --primary: #2a7de1;
-      --primary-hover: #1a67c4;
-      --bg: #f4f7fc;
-      --bg-dark: #0b0e14;
-      --card: #ffffff;
-      --card-dark: #1a1f2b;
-      --text: #0b1e33;
-      --text-dark: #eef2f6;
-      --glass-bg: rgba(255,255,255,0.7);
-      --glass-bg-dark: rgba(26,31,43,0.7);
+      --primary: #2a7de1; --primary-hover: #1a67c4;
+      --bg: #f4f7fc; --bg-dark: #0b0e14;
+      --card: #ffffff; --card-dark: #1a1f2b;
+      --text: #0b1e33; --text-dark: #eef2f6;
+      --glass-bg: rgba(255,255,255,0.7); --glass-bg-dark: rgba(26,31,43,0.7);
       --shadow: 0 8px 32px rgba(0,0,0,0.08);
       --transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
     }
     body {
       font-family: 'Inter', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      padding: 20px;
+      background: var(--bg); color: var(--text);
+      display: flex; justify-content: center; align-items: center;
+      min-height: 100vh; padding: 20px;
       transition: background 0.3s, color 0.3s;
     }
     body.dark { background: var(--bg-dark); color: var(--text-dark); }
     .admin-container { width: 100%; max-width: 1050px; }
 
-    /* Cards */
     .login-card, .dashboard-card {
-      background: var(--card);
-      backdrop-filter: blur(20px);
-      border-radius: 24px;
-      padding: 40px;
-      box-shadow: var(--shadow);
-      border: 1px solid rgba(255,255,255,0.2);
+      background: var(--card); backdrop-filter: blur(20px);
+      border-radius: 24px; padding: 40px;
+      box-shadow: var(--shadow); border: 1px solid rgba(255,255,255,0.2);
       transition: background 0.3s, border 0.3s;
     }
     body.dark .login-card,
     body.dark .dashboard-card {
-      background: var(--card-dark);
-      border-color: rgba(255,255,255,0.05);
+      background: var(--card-dark); border-color: rgba(255,255,255,0.05);
     }
 
-    /* Login */
     .logo { text-align: center; margin-bottom: 30px; }
     .logo i { font-size: 44px; color: var(--primary); }
-    .logo h1 {
-      font-size: 30px; font-weight: 700;
-      background: linear-gradient(135deg, #2a7de1, #6c5ce7);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
+    .logo h1 { font-size: 30px; font-weight: 700; background: linear-gradient(135deg, #2a7de1, #6c5ce7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
     .form-group { margin-bottom: 20px; }
     .form-group label { display: block; font-weight: 500; margin-bottom: 8px; font-size: 14px; }
     .input-wrapper { position: relative; }
-    .input-wrapper i.left-icon {
-      position: absolute; left: 16px; top: 50%;
-      transform: translateY(-50%); color: #aaa;
-    }
+    .input-wrapper i.left-icon { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: #aaa; }
     .input-wrapper input {
-      width: 100%; padding: 14px 44px 14px 44px;
-      border: 1px solid #e0e5ec; border-radius: 12px;
-      font-size: 15px; background: rgba(255,255,255,0.8);
-      backdrop-filter: blur(10px); transition: all 0.2s; color: inherit;
+      width: 100%; padding: 14px 44px 14px 44px; border: 1px solid #e0e5ec; border-radius: 12px;
+      font-size: 15px; background: rgba(255,255,255,0.8); backdrop-filter: blur(10px);
+      transition: all 0.2s; color: inherit;
     }
     body.dark .input-wrapper input {
       background: rgba(26,31,43,0.8); border-color: #2a3142; color: #eef2f6;
     }
-    .input-wrapper input:focus {
-      outline: none; border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(42,125,225,0.1);
-    }
-    .toggle-password {
-      position: absolute; right: 16px; top: 50%;
-      transform: translateY(-50%); cursor: pointer; color: #aaa;
-    }
+    .input-wrapper input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(42,125,225,0.1); }
+    .toggle-password { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #aaa; }
     .btn {
       width: 100%; padding: 14px; border: none; border-radius: 12px;
       background: var(--primary); color: white; font-weight: 600; font-size: 16px;
@@ -96,85 +66,39 @@
     .btn:hover { background: var(--primary-hover); }
     .error-message { color: #e74c3c; font-size: 13px; margin-top: 10px; display: none; }
 
-    /* Dashboard */
-    .header-bar {
-      display: flex; justify-content: space-between; align-items: center;
-      margin-bottom: 24px; flex-wrap: wrap; gap: 15px;
-    }
+    .header-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 15px; }
     .header-bar h2 { font-size: 22px; display: flex; align-items: center; gap: 8px; }
-    .logout-btn {
-      background: none; border: 1px solid #e0e5ec; color: var(--text);
-      padding: 8px 16px; border-radius: 30px; cursor: pointer;
-      font-weight: 500; transition: background 0.2s;
-      display: flex; align-items: center; gap: 6px;
-    }
+    .logout-btn { background: none; border: 1px solid #e0e5ec; color: var(--text); padding: 8px 16px; border-radius: 30px; cursor: pointer; font-weight: 500; transition: background 0.2s; display: flex; align-items: center; gap: 6px; }
     body.dark .logout-btn { border-color: #2a3142; color: var(--text-dark); }
     .logout-btn:hover { background: rgba(0,0,0,0.04); }
     body.dark .logout-btn:hover { background: rgba(255,255,255,0.04); }
 
     table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-    th, td {
-      text-align: left; padding: 14px 12px;
-      border-bottom: 1px solid rgba(0,0,0,0.06);
-    }
+    th, td { text-align: left; padding: 14px 12px; border-bottom: 1px solid rgba(0,0,0,0.06); }
     body.dark th, body.dark td { border-color: rgba(255,255,255,0.06); }
     th { font-weight: 600; opacity: 0.7; font-size: 13px; }
-    .badge {
-      padding: 4px 12px; border-radius: 20px; font-size: 12px;
-      font-weight: 600; display: inline-block;
-    }
+    .badge { padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; display: inline-block; }
     .badge-success { background: #d4edda; color: #155724; }
     .badge-warning { background: #fff3cd; color: #856404; }
-    .action-btn {
-      padding: 8px 16px; border-radius: 8px; border: none;
-      cursor: pointer; font-weight: 500; transition: background 0.2s;
-      margin-right: 6px;
-    }
+    .action-btn { padding: 8px 16px; border-radius: 8px; border: none; cursor: pointer; font-weight: 500; transition: background 0.2s; margin-right: 6px; }
     .action-btn.approve { background: #2ecc71; color: white; }
     .action-btn.approve:hover { background: #27ae60; }
     .action-btn.reject { background: #e74c3c; color: white; }
     .action-btn.reject:hover { background: #c0392b; }
 
-    /* Skeleton */
-    .skeleton {
-      background: linear-gradient(90deg, rgba(0,0,0,0.04) 25%, rgba(0,0,0,0.08) 50%, rgba(0,0,0,0.04) 75%);
-      background-size: 200% 100%; animation: shimmer 1.5s infinite;
-      border-radius: 8px;
-    }
-    body.dark .skeleton {
-      background: linear-gradient(90deg, rgba(255,255,255,0.04) 25%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.04) 75%);
-    }
+    .skeleton { background: linear-gradient(90deg, rgba(0,0,0,0.04) 25%, rgba(0,0,0,0.08) 50%, rgba(0,0,0,0.04) 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 8px; }
+    body.dark .skeleton { background: linear-gradient(90deg, rgba(255,255,255,0.04) 25%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.04) 75%); }
     @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
 
-    /* Toast */
-    .toast {
-      position: fixed; bottom: 30px; right: 30px; background: #ffffff;
-      color: #0b1e33; padding: 16px 24px; border-radius: 12px;
-      box-shadow: 0 12px 32px rgba(0,0,0,0.18); display: flex;
-      align-items: center; gap: 12px; backdrop-filter: blur(20px);
-      z-index: 10000; transform: translateY(120px); opacity: 0;
-      transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
-      max-width: 350px; border-left: 4px solid var(--primary);
-    }
+    .toast { position: fixed; bottom: 30px; right: 30px; background: #ffffff; color: #0b1e33; padding: 16px 24px; border-radius: 12px; box-shadow: 0 12px 32px rgba(0,0,0,0.18); display: flex; align-items: center; gap: 12px; backdrop-filter: blur(20px); z-index: 10000; transform: translateY(120px); opacity: 0; transition: all 0.3s cubic-bezier(0.4,0,0.2,1); max-width: 350px; border-left: 4px solid var(--primary); }
     body.dark .toast { background: #1a1f2b; color: #eef2f6; }
     .toast.show { transform: translateY(0); opacity: 1; }
     .toast.error { border-left-color: #e74c3c; }
     .toast.success { border-left-color: #2ecc71; }
 
-    /* Language/Theme toggles (in login) */
-    .toggles {
-      position: absolute; top: 20px; right: 20px; display: flex; gap: 10px;
-    }
-    .icon-btn {
-      background: var(--glass-bg); backdrop-filter: blur(16px);
-      border: 1px solid rgba(255,255,255,0.2); border-radius: 30px;
-      padding: 8px 16px; cursor: pointer; font-size: 14px;
-      display: flex; align-items: center; gap: 6px;
-      color: inherit; transition: background 0.3s;
-    }
-    body.dark .icon-btn {
-      background: var(--glass-bg-dark); border-color: rgba(255,255,255,0.05);
-    }
+    .toggles { position: absolute; top: 20px; right: 20px; display: flex; gap: 10px; }
+    .icon-btn { background: var(--glass-bg); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.2); border-radius: 30px; padding: 8px 16px; cursor: pointer; font-size: 14px; display: flex; align-items: center; gap: 6px; color: inherit; transition: background 0.3s; }
+    body.dark .icon-btn { background: var(--glass-bg-dark); border-color: rgba(255,255,255,0.05); }
 
     @media (max-width: 768px) {
       .login-card, .dashboard-card { padding: 25px; }
@@ -186,7 +110,6 @@
 </head>
 <body>
 
-  <!-- Toggles (visible only on login screen) -->
   <div class="toggles" id="togglesBar">
     <button class="icon-btn" id="langToggle"><i class="fas fa-globe"></i> <span>AR</span></button>
     <button class="icon-btn" id="themeToggle"><i class="fas fa-moon"></i> <span>Dark</span></button>
@@ -205,7 +128,7 @@
           <label data-lang="email">Email</label>
           <div class="input-wrapper">
             <i class="fas fa-envelope left-icon"></i>
-            <input type="email" id="adminEmail" placeholder="admin@example.com" required>
+            <input type="email" id="adminEmail" placeholder="admin@gmail.com" required>
           </div>
         </div>
         <div class="form-group">
@@ -223,7 +146,7 @@
       </form>
     </div>
 
-    <!-- Dashboard Section (hidden initially) -->
+    <!-- Dashboard Section -->
     <div id="dashboardSection" class="dashboard-card" style="display: none;">
       <div class="header-bar">
         <h2><i class="fas fa-users-cog"></i> <span data-lang="teacher-registrations">Teacher Registrations</span></h2>
@@ -233,13 +156,10 @@
           <button class="logout-btn" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> <span data-lang="logout">Logout</span></button>
         </div>
       </div>
-      <div id="teachersTableContainer">
-        <!-- Skeleton loading will appear here -->
-      </div>
+      <div id="teachersTableContainer"></div>
     </div>
   </div>
 
-  <!-- Toast -->
   <div class="toast" id="toast"></div>
 
   <script type="module">
@@ -261,7 +181,6 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
 
-    // ---------- HELPERS ----------
     const toast = document.getElementById('toast');
     function showToast(msg, type='success') {
       toast.innerHTML = `<i class="fas ${type==='success'?'fa-check-circle':'fa-exclamation-circle'}"></i> ${msg}`;
@@ -269,128 +188,70 @@
       setTimeout(() => toast.classList.remove('show'), 5000);
     }
 
-    // Language
     let currentLang = localStorage.getItem('zentor_lang') || 'en';
     const langMap = {
       en: {
-        'admin-subtitle': 'Teacher Approval Panel',
-        'email': 'Email',
-        'password': 'Password',
-        'login': 'Login',
-        'logout': 'Logout',
-        'teacher-registrations': 'Teacher Registrations',
-        'loading': 'Loading...',
-        'no-teachers': 'No teacher registrations found.',
-        'error-loading': 'Failed to load teachers. Check console.',
-        'approve-success': 'Teacher activated successfully!',
-        'deactivate-success': 'Teacher deactivated.',
-        'operation-failed': 'Operation failed: ',
-        'invalid-credentials': 'Invalid email or password.',
-        'unauthorized': 'Unauthorized: Not an admin account.',
-        'welcome': 'Welcome, Admin!',
-        'logged-out': 'Logged out.',
-        'pending': 'Pending',
-        'activated': 'Activated',
-        'approve': 'Approve',
-        'deactivate': 'Deactivate'
+        'admin-subtitle': 'Teacher Approval Panel', 'email': 'Email', 'password': 'Password',
+        'login': 'Login', 'logout': 'Logout', 'teacher-registrations': 'Teacher Registrations',
+        'loading': 'Loading...', 'no-teachers': 'No teacher registrations found.',
+        'error-loading': 'Failed to load teachers.', 'approve-success': 'Teacher activated successfully!',
+        'deactivate-success': 'Teacher deactivated.', 'operation-failed': 'Operation failed: ',
+        'invalid-credentials': 'Invalid email or password.', 'unauthorized': 'Unauthorized: Not an admin account.',
+        'welcome': 'Welcome, Admin!', 'logged-out': 'Logged out.', 'pending': 'Pending',
+        'activated': 'Activated', 'approve': 'Approve', 'deactivate': 'Deactivate'
       },
       ar: {
-        'admin-subtitle': 'لوحة تفعيل المعلمين',
-        'email': 'البريد الإلكتروني',
-        'password': 'كلمة المرور',
-        'login': 'تسجيل الدخول',
-        'logout': 'تسجيل الخروج',
-        'teacher-registrations': 'تسجيلات المعلمين',
-        'loading': 'جاري التحميل...',
-        'no-teachers': 'لا يوجد معلمون مسجلون.',
-        'error-loading': 'فشل تحميل المعلمين. راجع السجل.',
-        'approve-success': 'تم تفعيل المعلم بنجاح!',
-        'deactivate-success': 'تم تعطيل المعلم.',
-        'operation-failed': 'فشلت العملية: ',
-        'invalid-credentials': 'بريد إلكتروني أو كلمة مرور غير صحيحة.',
-        'unauthorized': 'غير مصرح: ليس حساب مسؤول.',
-        'welcome': 'مرحبًا بك أيها المسؤول!',
-        'logged-out': 'تم تسجيل الخروج.',
-        'pending': 'قيد الانتظار',
-        'activated': 'مفعل',
-        'approve': 'تفعيل',
-        'deactivate': 'تعطيل'
+        'admin-subtitle': 'لوحة تفعيل المعلمين', 'email': 'البريد الإلكتروني', 'password': 'كلمة المرور',
+        'login': 'تسجيل الدخول', 'logout': 'تسجيل الخروج', 'teacher-registrations': 'تسجيلات المعلمين',
+        'loading': 'جاري التحميل...', 'no-teachers': 'لا يوجد معلمون مسجلون.',
+        'error-loading': 'فشل تحميل المعلمين.', 'approve-success': 'تم تفعيل المعلم بنجاح!',
+        'deactivate-success': 'تم تعطيل المعلم.', 'operation-failed': 'فشلت العملية: ',
+        'invalid-credentials': 'بريد إلكتروني أو كلمة مرور غير صحيحة.', 'unauthorized': 'غير مصرح: ليس حساب مسؤول.',
+        'welcome': 'مرحبًا بك أيها المسؤول!', 'logged-out': 'تم تسجيل الخروج.', 'pending': 'قيد الانتظار',
+        'activated': 'مفعل', 'approve': 'تفعيل', 'deactivate': 'تعطيل'
       }
     };
 
-    function t(key) {
-      return langMap[currentLang] && langMap[currentLang][key] ? langMap[currentLang][key] : key;
-    }
-
+    function t(key) { return langMap[currentLang]?.[key] || key; }
     function applyLanguageUI() {
-      document.querySelectorAll('[data-lang]').forEach(el => {
-        const key = el.getAttribute('data-lang');
-        el.textContent = t(key);
-      });
-      // Update toggle buttons text
-      document.querySelectorAll('#langToggle span, #langToggleDash span').forEach(span => {
-        span.textContent = currentLang === 'en' ? 'AR' : 'EN';
-      });
-      // Update placeholders
-      const emailInput = document.getElementById('adminEmail');
-      if (emailInput) emailInput.placeholder = currentLang === 'en' ? 'admin@example.com' : 'admin@example.com';
-      // RTL/LTR
+      document.querySelectorAll('[data-lang]').forEach(el => el.textContent = t(el.getAttribute('data-lang')));
+      document.querySelectorAll('#langToggle span, #langToggleDash span').forEach(s => s.textContent = currentLang === 'en' ? 'AR' : 'EN');
       document.documentElement.lang = currentLang;
       document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
       localStorage.setItem('zentor_lang', currentLang);
     }
 
-    // Theme
     function applyTheme() {
       const saved = localStorage.getItem('zentor_theme') || 'light';
-      if (saved === 'dark') {
-        document.body.classList.add('dark');
-        document.querySelectorAll('#themeToggle i, #themeToggleDash i').forEach(i => i.className = 'fas fa-sun');
-        document.querySelectorAll('#themeToggle span, #themeToggleDash span').forEach(s => s.textContent = 'Light');
-      } else {
-        document.body.classList.remove('dark');
-        document.querySelectorAll('#themeToggle i, #themeToggleDash i').forEach(i => i.className = 'fas fa-moon');
-        document.querySelectorAll('#themeToggle span, #themeToggleDash span').forEach(s => s.textContent = 'Dark');
-      }
+      const isDark = saved === 'dark';
+      document.body.classList.toggle('dark', isDark);
+      document.querySelectorAll('#themeToggle i, #themeToggleDash i').forEach(i => i.className = isDark ? 'fas fa-sun' : 'fas fa-moon');
+      document.querySelectorAll('#themeToggle span, #themeToggleDash span').forEach(s => s.textContent = isDark ? 'Light' : 'Dark');
     }
-
     function toggleTheme() {
-      const isDark = document.body.classList.toggle('dark');
+      const isDark = !document.body.classList.contains('dark');
+      document.body.classList.toggle('dark', isDark);
       localStorage.setItem('zentor_theme', isDark ? 'dark' : 'light');
       applyTheme();
     }
 
-    // Initialize language and theme
-    applyLanguageUI();
-    applyTheme();
+    applyLanguageUI(); applyTheme();
 
-    // Event listeners for toggles (login + dashboard)
-    document.getElementById('langToggle').addEventListener('click', () => {
-      currentLang = currentLang === 'en' ? 'ar' : 'en';
-      applyLanguageUI();
-    });
-    document.getElementById('langToggleDash').addEventListener('click', () => {
-      currentLang = currentLang === 'en' ? 'ar' : 'en';
-      applyLanguageUI();
-    });
+    document.getElementById('langToggle').addEventListener('click', ()=>{ currentLang = currentLang === 'en' ? 'ar' : 'en'; applyLanguageUI(); });
+    document.getElementById('langToggleDash').addEventListener('click', ()=>{ currentLang = currentLang === 'en' ? 'ar' : 'en'; applyLanguageUI(); });
     document.getElementById('themeToggle').addEventListener('click', toggleTheme);
     document.getElementById('themeToggleDash').addEventListener('click', toggleTheme);
-
-    // Toggle password visibility
-    document.getElementById('toggleAdminPassword').addEventListener('click', function() {
+    document.getElementById('toggleAdminPassword').addEventListener('click', function(){
       const p = document.getElementById('adminPassword');
       p.type = p.type === 'password' ? 'text' : 'password';
-      this.classList.toggle('fa-eye');
-      this.classList.toggle('fa-eye-slash');
+      this.classList.toggle('fa-eye'); this.classList.toggle('fa-eye-slash');
     });
 
-    // ---------- LOGIC ----------
     const loginSection = document.getElementById('loginSection');
     const dashboardSection = document.getElementById('dashboardSection');
     const loginError = document.getElementById('loginError');
     const togglesBar = document.getElementById('togglesBar');
 
-    // Login form
     document.getElementById('adminLoginForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const email = document.getElementById('adminEmail').value.trim();
@@ -402,18 +263,14 @@
 
       try {
         const cred = await signInWithEmailAndPassword(auth, email, password);
-        // Check for admin email (case insensitive)
         if (cred.user.email.toLowerCase() !== 'admin@gmail.com') {
           await signOut(auth);
           throw new Error('unauthorized');
         }
-        // success -> onAuthStateChanged will handle UI
         showToast(t('welcome'), 'success');
       } catch (err) {
-        let msg;
-        if (err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password') {
-          msg = t('invalid-credentials');
-        } else if (err.code === 'auth/invalid-email') {
+        let msg = t('invalid-credentials');
+        if (err.code === 'auth/invalid-credential' || err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password') {
           msg = t('invalid-credentials');
         } else if (err.message === 'unauthorized') {
           msg = t('unauthorized');
@@ -429,126 +286,54 @@
       }
     });
 
-    // Logout
-    document.getElementById('logoutBtn').addEventListener('click', async () => {
-      await signOut(auth);
-    });
+    document.getElementById('logoutBtn').addEventListener('click', async () => await signOut(auth));
 
-    // Fetch teachers and render table
     async function loadTeachers() {
       const container = document.getElementById('teachersTableContainer');
-      container.innerHTML = '';
-      // Skeleton
-      for (let i=0; i<3; i++) {
-        container.innerHTML += '<div class="skeleton" style="height:40px; width:100%; margin-bottom:12px;"></div>';
-      }
-
+      container.innerHTML = '<div class="skeleton" style="height:40px; width:100%; margin-bottom:12px;"></div>'.repeat(3);
       try {
-        // Use collectionGroup to fetch all teacher profiles
         const profileQuery = query(collectionGroup(db, 'profile'));
         const snapshot = await getDocs(profileQuery);
-
         const teachers = [];
         for (const docSnap of snapshot.docs) {
           const data = docSnap.data();
-          // path: teachers/{uid}/settings/profile
-          const pathParts = docSnap.ref.path.split('/');
-          const teacherUid = pathParts[1];
-
-          // Check if activated (preferences doc exists)
-          const prefRef = doc(db, `teachers/${teacherUid}/settings/preferences`);
-          const prefSnap = await getDoc(prefRef);
-          const activated = prefSnap.exists();
-
+          const teacherUid = docSnap.ref.path.split('/')[1];
+          const prefSnap = await getDoc(doc(db, `teachers/${teacherUid}/settings/preferences`));
           teachers.push({
             uid: teacherUid,
-            name: data.name || '---',
-            email: data.email || '',
-            subject: data.subject || '---',
-            grades: Array.isArray(data.grades) ? data.grades : [],
-            createdAt: data.createdAt || '',
-            approved: activated
+            name: data.name || '---', email: data.email || '',
+            subject: data.subject || '---', grades: data.grades || [],
+            createdAt: data.createdAt || '', approved: prefSnap.exists()
           });
         }
-
-        // Sort by creation date descending
-        teachers.sort((a,b) => (b.createdAt || '').localeCompare(a.createdAt || ''));
-
-        if (teachers.length === 0) {
+        teachers.sort((a,b) => (b.createdAt||'').localeCompare(a.createdAt||''));
+        if (!teachers.length) {
           container.innerHTML = `<div style="text-align:center; padding:40px; opacity:0.6;">${t('no-teachers')}</div>`;
           return;
         }
-
-        let tableHTML = `
-          <table>
-            <thead>
-              <tr>
-                <th>${t('Name')}</th>
-                <th>${t('Email')}</th>
-                <th>${t('Subject')}</th>
-                <th>${t('Grades')}</th>
-                <th>${t('Status')}</th>
-                <th>${t('Actions')}</th>
-              </tr>
-            </thead>
-            <tbody>
-        `;
-
+        let html = `<table><thead><tr><th>Name</th><th>Email</th><th>Subject</th><th>Grades</th><th>Status</th><th>Actions</th></tr></thead><tbody>`;
         teachers.forEach(t => {
-          const statusBadge = t.approved
-            ? `<span class="badge badge-success">${t('activated')}</span>`
-            : `<span class="badge badge-warning">${t('pending')}</span>`;
-          const actionBtn = t.approved
-            ? `<button class="action-btn reject" data-uid="${t.uid}">${t('deactivate')}</button>`
-            : `<button class="action-btn approve" data-uid="${t.uid}">${t('approve')}</button>`;
-
-          tableHTML += `
-            <tr>
-              <td>${t.name}</td>
-              <td>${t.email}</td>
-              <td>${t.subject}</td>
-              <td>${t.grades.join(', ') || '---'}</td>
-              <td>${statusBadge}</td>
-              <td>${actionBtn}</td>
-            </tr>
-          `;
+          const badge = t.approved ? `<span class="badge badge-success">${t('activated')}</span>` : `<span class="badge badge-warning">${t('pending')}</span>`;
+          const btn = t.approved ? `<button class="action-btn reject" data-uid="${t.uid}">${t('deactivate')}</button>` : `<button class="action-btn approve" data-uid="${t.uid}">${t('approve')}</button>`;
+          html += `<tr><td>${t.name}</td><td>${t.email}</td><td>${t.subject}</td><td>${t.grades.join(', ')||'---'}</td><td>${badge}</td><td>${btn}</td></tr>`;
         });
-
-        tableHTML += '</tbody></table>';
-        container.innerHTML = tableHTML;
-
-        // Attach event listeners
-        document.querySelectorAll('.action-btn.approve').forEach(btn => {
-          btn.addEventListener('click', async (e) => {
-            const uid = e.target.getAttribute('data-uid');
-            await toggleTeacherActivation(uid, true);
-          });
-        });
-        document.querySelectorAll('.action-btn.reject').forEach(btn => {
-          btn.addEventListener('click', async (e) => {
-            const uid = e.target.getAttribute('data-uid');
-            await toggleTeacherActivation(uid, false);
-          });
-        });
-
-      } catch (error) {
-        console.error(error);
+        html += '</tbody></table>';
+        container.innerHTML = html;
+        document.querySelectorAll('.action-btn.approve').forEach(b => b.addEventListener('click', (e)=> toggleTeacherActivation(e.target.dataset.uid, true)));
+        document.querySelectorAll('.action-btn.reject').forEach(b => b.addEventListener('click', (e)=> toggleTeacherActivation(e.target.dataset.uid, false)));
+      } catch (err) {
+        console.error(err);
         container.innerHTML = `<div style="text-align:center; padding:40px; color:#e74c3c;">${t('error-loading')}</div>`;
         showToast(t('error-loading'), 'error');
       }
     }
 
     async function toggleTeacherActivation(uid, activate) {
-      const prefRef = doc(db, `teachers/${uid}/settings/preferences`);
+      const ref = doc(db, `teachers/${uid}/settings/preferences`);
       try {
-        if (activate) {
-          await setDoc(prefRef, { activatedAt: new Date().toISOString() });
-          showToast(t('approve-success'), 'success');
-        } else {
-          await deleteDoc(prefRef);
-          showToast(t('deactivate-success'), 'success');
-        }
-        // Refresh table
+        if (activate) await setDoc(ref, { activatedAt: new Date().toISOString() });
+        else await deleteDoc(ref);
+        showToast(activate ? t('approve-success') : t('deactivate-success'), 'success');
         loadTeachers();
       } catch (err) {
         console.error(err);
@@ -556,22 +341,18 @@
       }
     }
 
-    // Auth state observer
     onAuthStateChanged(auth, (user) => {
       if (user && user.email.toLowerCase() === 'admin@gmail.com') {
-        // Admin logged in
         loginSection.style.display = 'none';
         dashboardSection.style.display = 'block';
         togglesBar.style.display = 'none';
         loadTeachers();
       } else {
-        // Not admin or logged out
         loginSection.style.display = 'block';
         dashboardSection.style.display = 'none';
         togglesBar.style.display = 'flex';
       }
     });
-
   </script>
 </body>
 </html>
