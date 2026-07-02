@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zentor Admin - Teacher Approval</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --primary: #2a7de1; --primary-hover: #1a67c4;
+      --bg: #f4f7fc; --bg-dark: #0b0e14;
+      --card: #ffffff; --card-dark: #1a1f2b;
+      --text: #0b1e33; --text-dark: #eef2f6;
+      --glass-bg: rgba(255,255,255,0.7); --glass-bg-dark: rgba(26,31,43,0.7);
+      --shadow: 0 8px 32px rgba(0,0,0,0.08);
+      --transition: all 0.3s ease;
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg); color: var(--text);
+      display: flex; justify-content: center; align-items: center;
+      min-height: 100vh; padding: 20px;
+      transition: background 0.3s, color 0.3s;
+    }
+    body.dark { background: var(--bg-dark); color: var(--text-dark); }
+    .admin-container { width: 100%; max-width: 1000px; }
+    .login-card, .dashboard-card {
+      background: var(--card); backdrop-filter: blur(20px);
+      border-radius: 24px; padding: 40px;
+      box-shadow: var(--shadow); border: 1px solid rgba(255,255,255,0.2);
+      transition: background 0.3s, border 0.3s;
+    }
+    body.dark .login-card, body.dark .dashboard-card {
+      background: var(--card-dark); border-color: rgba(255,255,255,0.05);
+    }
+    .logo { text-align: center; margin-bottom: 30px; }
+    .logo i { font-size: 40px; color: var(--primary); }
+    .logo h1 { font-size: 28px; font-weight: 700; background: linear-gradient(135deg, #2a7de1, #6c5ce7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .form-group { margin-bottom: 20px; }
+    .form-group label { display: block; font-weight: 500; margin-bottom: 8px; font-size: 14px; }
+    .input-wrapper { position: relative; }
+    .input-wrapper i.left-icon { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: #aaa; }
+    .input-wrapper input {
+      width: 100%; padding: 14px 44px 14px 44px;
+      border: 1px solid #e0e5ec; border-radius: 12px;
+      font-size: 15px; background: rgba(255,255,255,0.8);
+      backdrop-filter: blur(10px); transition: all 0.2s; color: inherit;
+    }
+    body.dark .input-wrapper input {
+      background: rgba(26,31,43,0.8); border-color: #2a3142; color: #eef2f6;
+    }
+    .input-wrapper input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(42,125,225,0.1); }
+    .toggle-password { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #aaa; }
+    .btn {
+      width: 100%; padding: 14px; border: none; border-radius: 12px;
+      background: var(--primary); color: white; font-weight: 600; font-size: 16px;
+      cursor: pointer; transition: background 0.2s; display: flex; align-items: center;
+      justify-content: center; gap: 8px; margin-top: 10px;
+    }
+    .btn:hover { background: var(--primary-hover); }
+    .error-message { color: #e74c3c; font-size: 13px; margin-top: 10px; display: none; }
+    .toast { position: fixed; bottom: 30px; right: 30px; background: #fff; color: #0b1e33; padding: 16px 24px; border-radius: 12px; box-shadow: 0 12px 32px rgba(0,0,0,0.18); display: flex; align-items: center; gap: 12px; backdrop-filter: blur(20px); z-index: 10000; transform: translateY(120px); opacity: 0; transition: all 0.3s; max-width: 350px; border-left: 4px solid var(--primary); }
+    body.dark .toast { background: #1a1f2b; color: #eef2f6; }
+    .toast.show { transform: translateY(0); opacity: 1; }
+    .toast.error { border-left-color: #e74c3c; }
+    .toast.success { border-left-color: #2ecc71; }
+
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { padding: 14px 12px; text-align: left; border-bottom: 1px solid rgba(0,0,0,0.06); }
+    body.dark th, body.dark td { border-color: rgba(255,255,255,0.06); }
+    th { font-weight: 600; opacity: 0.7; }
+    .badge { padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; display: inline-block; }
+    .badge-success { background: #d4edda; color: #155724; }
+    .badge-warning { background: #fff3cd; color: #856404; }
+    .action-btn { padding: 8px 16px; border-radius: 8px; border: none; cursor: pointer; font-weight: 500; transition: background 0.2s; }
+    .action-btn.approve { background: #2ecc71; color: white; margin-right: 8px; }
+    .action-btn.approve:hover { background: #27ae60; }
+    .action-btn.reject { background: #e74c3c; color: white; }
+    .action-btn.reject:hover { background: #c0392b; }
+    .logout-link { text-align: right; margin-bottom: 10px; }
+    .logout-link a { color: var(--primary); text-decoration: none; font-weight: 600; }
+    .skeleton { background: linear-gradient(90deg, rgba(0,0,0,0.04) 25%, rgba(0,0,0,0.08) 50%, rgba(0,0,0,0.04) 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 8px; }
+    body.dark .skeleton { background: linear-gradient(90deg, rgba(255,255,255,0.04) 25%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.04) 75%); }
+    @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+  </style>
+</head>
+<body>
+
+  <div class="admin-container">
+    <!-- Login Form -->
+    <div id="loginSection" class="login-card">
+      <div class="logo">
+        <i class="fas fa-shield-alt"></i>
+        <h1>Zentor Admin</h1>
+        <p style="opacity:0.7;">Teacher Approval Panel</p>
+      </div>
+      <form id="adminLoginForm">
+        <div class="form-group">
+          <label>Email</label>
+          <div class="input-wrapper">
+            <i class="fas fa-envelope left-icon"></i>
+            <input type="email" id="adminEmail" value="Admin@gmail.com" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <div class="input-wrapper">
+            <i class="fas fa-lock left-icon"></i>
+            <input type="password" id="adminPassword" value="Admin123" required>
+            <i class="toggle-password fas fa-eye" id="toggleAdminPassword"></i>
+          </div>
+        </div>
+        <div class="error-message" id="loginError"></div>
+        <button type="submit" class="btn"><i class="fas fa-sign-in-alt"></i> Login</button>
+      </form>
+    </div>
+
+    <!-- Dashboard Section (hidden initially) -->
+    <div id="dashboardSection" class="dashboard-card" style="display: none;">
+      <div class="logout-link"><a href="#" id="logoutLink"><i class="fas fa-sign-out-alt"></i> Logout</a></div>
+      <h2><i class="fas fa-users"></i> Teacher Registrations</h2>
+      <div id="teachersTableContainer">
+        <!-- Skeleton loading -->
+        <div class="skeleton" style="height: 40px; width: 100%; margin-bottom: 12px;"></div>
+        <div class="skeleton" style="height: 40px; width: 100%; margin-bottom: 12px;"></div>
+        <div class="skeleton" style="height: 40px; width: 100%; margin-bottom: 12px;"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+    import { getFirestore, collection, getDocs, doc, setDoc, deleteDoc, query, where, collectionGroup } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBOd-cHm8J84BMwdlP8a3zOVlK8sboUFj0",
+      authDomain: "zentor-caaf1.firebaseapp.com",
+      projectId: "zentor-caaf1",
+      storageBucket: "zentor-caaf1.firebasestorage.app",
+      messagingSenderId: "681267238383",
+      appId: "1:681267238383:web:0c93fb405bfd6b5903921a",
+      measurementId: "G-X80GNJHMS5"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    const toast = document.getElementById('toast');
+    function showToast(msg, type='success') {
+      toast.innerHTML = `<i class="fas ${type==='success'?'fa-check-circle':'fa-exclamation-circle'}"></i> ${msg}`;
+      toast.className = `toast ${type} show`;
+      setTimeout(() => toast.classList.remove('show'), 5000);
+    }
+
+    const loginSection = document.getElementById('loginSection');
+    const dashboardSection = document.getElementById('dashboardSection');
+    const loginError = document.getElementById('loginError');
+
+    // Toggle password
+    document.getElementById('toggleAdminPassword').addEventListener('click', function(){
+      const p = document.getElementById('adminPassword');
+      p.type = p.type === 'password' ? 'text' : 'password';
+      this.classList.toggle('fa-eye');
+      this.classList.toggle('fa-eye-slash');
+    });
+
+    // Login form
+    document.getElementById('adminLoginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('adminEmail').value.trim();
+      const password = document.getElementById('adminPassword').value;
+      loginError.style.display = 'none';
+      const btn = e.target.querySelector('button');
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Logging in...';
+      btn.disabled = true;
+      try {
+        const cred = await signInWithEmailAndPassword(auth, email, password);
+        if (cred.user.email.toLowerCase() !== 'admin@gmail.com') {
+          await signOut(auth);
+          throw new Error('Unauthorized: Not an admin account.');
+        }
+        // Success - will be handled by onAuthStateChanged
+        showToast('Welcome, Admin!', 'success');
+      } catch (err) {
+        let msg = err.message;
+        if (err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password') {
+          msg = 'Invalid email or password.';
+        } else if (err.code === 'auth/invalid-email') {
+          msg = 'Invalid email format.';
+        }
+        loginError.textContent = msg;
+        loginError.style.display = 'block';
+        showToast(msg, 'error');
+      } finally {
+        btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Login';
+        btn.disabled = false;
+      }
+    });
+
+    // Logout
+    document.getElementById('logoutLink').addEventListener('click', async (e) => {
+      e.preventDefault();
+      await signOut(auth);
+      loginSection.style.display = 'block';
+      dashboardSection.style.display = 'none';
+      showToast('Logged out', 'success');
+    });
+
+    // Fetch and display teachers
+    async function loadTeachers() {
+      const container = document.getElementById('teachersTableContainer');
+      container.innerHTML = '<div class="skeleton" style="height: 40px; width: 100%; margin-bottom: 12px;"></div>'.repeat(3);
+      try {
+        // Fetch all teacher profiles using collectionGroup
+        const profileQuery = query(collectionGroup(db, 'profile'));
+        const snapshot = await getDocs(profileQuery);
+        const teachers = [];
+        
+        // Get all teacher UIDs and their profile data
+        for (const docSnap of snapshot.docs) {
+          const data = docSnap.data();
+          // Extract teacher UID from path: teachers/{uid}/settings/profile
+          const pathParts = docSnap.ref.path.split('/');
+          const teacherUid = pathParts[1]; // teachers/{uid}/settings/profile
+          
+          // Check if preferences exists (activated)
+          const prefRef = doc(db, `teachers/${teacherUid}/settings/preferences`);
+          const prefSnap = await getDoc(prefRef);
+          const activated = prefSnap.exists();
+          
+          teachers.push({
+            uid: teacherUid,
+            name: data.name || 'Unknown',
+            email: data.email || '',
+            subject: data.subject || 'N/A',
+            grades: data.grades || [],
+            createdAt: data.createdAt || '',
+            approved: activated
+          });
+        }
+        
+        // Sort by creation date descending
+        teachers.sort((a,b) => (b.createdAt || '').localeCompare(a.createdAt || ''));
+        
+        if (teachers.length === 0) {
+          container.innerHTML = '<div style="text-align:center; padding:40px; opacity:0.6;">No teacher registrations found.</div>';
+          return;
+        }
+        
+        let tableHTML = `
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Subject</th>
+                <th>Grades</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+        `;
+        
+        teachers.forEach(t => {
+          const statusBadge = t.approved 
+            ? '<span class="badge badge-success">Activated</span>' 
+            : '<span class="badge badge-warning">Pending</span>';
+          const actionBtns = t.approved 
+            ? '<button class="action-btn reject" data-uid="'+t.uid+'">Deactivate</button>'
+            : '<button class="action-btn approve" data-uid="'+t.uid+'">Approve</button>';
+          
+          tableHTML += `
+            <tr>
+              <td>${t.name}</td>
+              <td>${t.email}</td>
+              <td>${t.subject}</td>
+              <td>${t.grades.join(', ')}</td>
+              <td>${statusBadge}</td>
+              <td>${actionBtns}</td>
+            </tr>
+          `;
+        });
+        
+        tableHTML += '</tbody></table>';
+        container.innerHTML = tableHTML;
+        
+        // Add event listeners to approve/deactivate buttons
+        document.querySelectorAll('.action-btn.approve').forEach(btn => {
+          btn.addEventListener('click', async (e) => {
+            const uid = e.target.getAttribute('data-uid');
+            await activateTeacher(uid, true);
+          });
+        });
+        document.querySelectorAll('.action-btn.reject').forEach(btn => {
+          btn.addEventListener('click', async (e) => {
+            const uid = e.target.getAttribute('data-uid');
+            await activateTeacher(uid, false);
+          });
+        });
+        
+      } catch (error) {
+        console.error(error);
+        container.innerHTML = '<div style="text-align:center; padding:40px; color:red;">Failed to load teachers. Check console.</div>';
+        showToast('Error loading teachers', 'error');
+      }
+    }
+    
+    async function activateTeacher(uid, activate) {
+      try {
+        const prefRef = doc(db, `teachers/${uid}/settings/preferences`);
+        if (activate) {
+          await setDoc(prefRef, { activatedAt: new Date().toISOString() });
+          showToast('Teacher activated successfully!', 'success');
+        } else {
+          await deleteDoc(prefRef);
+          showToast('Teacher deactivated.', 'success');
+        }
+        loadTeachers(); // Refresh list
+      } catch (error) {
+        console.error(error);
+        showToast('Operation failed: ' + error.message, 'error');
+      }
+    }
+
+    // Auth state listener
+    onAuthStateChanged(auth, (user) => {
+      if (user && user.email.toLowerCase() === 'admin@gmail.com') {
+        // Admin logged in
+        loginSection.style.display = 'none';
+        dashboardSection.style.display = 'block';
+        loadTeachers();
+      } else {
+        // Not admin or logged out
+        loginSection.style.display = 'block';
+        dashboardSection.style.display = 'none';
+      }
+    });
+  </script>
+</body>
+</html>
