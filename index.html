@@ -11,39 +11,65 @@
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     :root {
-      --primary: #2a7de1; --primary-hover: #1a67c4;
-      --bg: #f4f7fc; --bg-dark: #0b0e14;
-      --card: #ffffff; --card-dark: #1a1f2b;
-      --text: #0b1e33; --text-dark: #eef2f6;
-      --glass-bg: rgba(255,255,255,0.7); --glass-bg-dark: rgba(26,31,43,0.7);
+      --primary: #2a7de1;
+      --primary-hover: #1a67c4;
+      --bg: #f4f7fc;
+      --bg-dark: #0b0e14;
+      --card: #ffffff;
+      --card-dark: #1a1f2b;
+      --text: #0b1e33;
+      --text-dark: #eef2f6;
+      --glass-bg: rgba(255,255,255,0.7);
+      --glass-bg-dark: rgba(26,31,43,0.7);
       --shadow: 0 8px 32px rgba(0,0,0,0.08);
-      --transition: all 0.3s ease;
+      --transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
     }
     body {
       font-family: 'Inter', sans-serif;
-      background: var(--bg); color: var(--text);
-      display: flex; justify-content: center; align-items: center;
-      min-height: 100vh; padding: 20px;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
       transition: background 0.3s, color 0.3s;
     }
     body.dark { background: var(--bg-dark); color: var(--text-dark); }
-    .admin-container { width: 100%; max-width: 1000px; }
+    .admin-container { width: 100%; max-width: 1050px; }
+
+    /* Cards */
     .login-card, .dashboard-card {
-      background: var(--card); backdrop-filter: blur(20px);
-      border-radius: 24px; padding: 40px;
-      box-shadow: var(--shadow); border: 1px solid rgba(255,255,255,0.2);
+      background: var(--card);
+      backdrop-filter: blur(20px);
+      border-radius: 24px;
+      padding: 40px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255,255,255,0.2);
       transition: background 0.3s, border 0.3s;
     }
-    body.dark .login-card, body.dark .dashboard-card {
-      background: var(--card-dark); border-color: rgba(255,255,255,0.05);
+    body.dark .login-card,
+    body.dark .dashboard-card {
+      background: var(--card-dark);
+      border-color: rgba(255,255,255,0.05);
     }
+
+    /* Login */
     .logo { text-align: center; margin-bottom: 30px; }
-    .logo i { font-size: 40px; color: var(--primary); }
-    .logo h1 { font-size: 28px; font-weight: 700; background: linear-gradient(135deg, #2a7de1, #6c5ce7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .logo i { font-size: 44px; color: var(--primary); }
+    .logo h1 {
+      font-size: 30px; font-weight: 700;
+      background: linear-gradient(135deg, #2a7de1, #6c5ce7);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
     .form-group { margin-bottom: 20px; }
     .form-group label { display: block; font-weight: 500; margin-bottom: 8px; font-size: 14px; }
     .input-wrapper { position: relative; }
-    .input-wrapper i.left-icon { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: #aaa; }
+    .input-wrapper i.left-icon {
+      position: absolute; left: 16px; top: 50%;
+      transform: translateY(-50%); color: #aaa;
+    }
     .input-wrapper input {
       width: 100%; padding: 14px 44px 14px 44px;
       border: 1px solid #e0e5ec; border-radius: 12px;
@@ -53,42 +79,118 @@
     body.dark .input-wrapper input {
       background: rgba(26,31,43,0.8); border-color: #2a3142; color: #eef2f6;
     }
-    .input-wrapper input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(42,125,225,0.1); }
-    .toggle-password { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #aaa; }
+    .input-wrapper input:focus {
+      outline: none; border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(42,125,225,0.1);
+    }
+    .toggle-password {
+      position: absolute; right: 16px; top: 50%;
+      transform: translateY(-50%); cursor: pointer; color: #aaa;
+    }
     .btn {
       width: 100%; padding: 14px; border: none; border-radius: 12px;
       background: var(--primary); color: white; font-weight: 600; font-size: 16px;
-      cursor: pointer; transition: background 0.2s; display: flex; align-items: center;
-      justify-content: center; gap: 8px; margin-top: 10px;
+      cursor: pointer; transition: background 0.2s; display: flex;
+      align-items: center; justify-content: center; gap: 8px; margin-top: 12px;
     }
     .btn:hover { background: var(--primary-hover); }
     .error-message { color: #e74c3c; font-size: 13px; margin-top: 10px; display: none; }
-    .toast { position: fixed; bottom: 30px; right: 30px; background: #fff; color: #0b1e33; padding: 16px 24px; border-radius: 12px; box-shadow: 0 12px 32px rgba(0,0,0,0.18); display: flex; align-items: center; gap: 12px; backdrop-filter: blur(20px); z-index: 10000; transform: translateY(120px); opacity: 0; transition: all 0.3s; max-width: 350px; border-left: 4px solid var(--primary); }
+
+    /* Dashboard */
+    .header-bar {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 24px; flex-wrap: wrap; gap: 15px;
+    }
+    .header-bar h2 { font-size: 22px; display: flex; align-items: center; gap: 8px; }
+    .logout-btn {
+      background: none; border: 1px solid #e0e5ec; color: var(--text);
+      padding: 8px 16px; border-radius: 30px; cursor: pointer;
+      font-weight: 500; transition: background 0.2s;
+      display: flex; align-items: center; gap: 6px;
+    }
+    body.dark .logout-btn { border-color: #2a3142; color: var(--text-dark); }
+    .logout-btn:hover { background: rgba(0,0,0,0.04); }
+    body.dark .logout-btn:hover { background: rgba(255,255,255,0.04); }
+
+    table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    th, td {
+      text-align: left; padding: 14px 12px;
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+    }
+    body.dark th, body.dark td { border-color: rgba(255,255,255,0.06); }
+    th { font-weight: 600; opacity: 0.7; font-size: 13px; }
+    .badge {
+      padding: 4px 12px; border-radius: 20px; font-size: 12px;
+      font-weight: 600; display: inline-block;
+    }
+    .badge-success { background: #d4edda; color: #155724; }
+    .badge-warning { background: #fff3cd; color: #856404; }
+    .action-btn {
+      padding: 8px 16px; border-radius: 8px; border: none;
+      cursor: pointer; font-weight: 500; transition: background 0.2s;
+      margin-right: 6px;
+    }
+    .action-btn.approve { background: #2ecc71; color: white; }
+    .action-btn.approve:hover { background: #27ae60; }
+    .action-btn.reject { background: #e74c3c; color: white; }
+    .action-btn.reject:hover { background: #c0392b; }
+
+    /* Skeleton */
+    .skeleton {
+      background: linear-gradient(90deg, rgba(0,0,0,0.04) 25%, rgba(0,0,0,0.08) 50%, rgba(0,0,0,0.04) 75%);
+      background-size: 200% 100%; animation: shimmer 1.5s infinite;
+      border-radius: 8px;
+    }
+    body.dark .skeleton {
+      background: linear-gradient(90deg, rgba(255,255,255,0.04) 25%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.04) 75%);
+    }
+    @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+
+    /* Toast */
+    .toast {
+      position: fixed; bottom: 30px; right: 30px; background: #ffffff;
+      color: #0b1e33; padding: 16px 24px; border-radius: 12px;
+      box-shadow: 0 12px 32px rgba(0,0,0,0.18); display: flex;
+      align-items: center; gap: 12px; backdrop-filter: blur(20px);
+      z-index: 10000; transform: translateY(120px); opacity: 0;
+      transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+      max-width: 350px; border-left: 4px solid var(--primary);
+    }
     body.dark .toast { background: #1a1f2b; color: #eef2f6; }
     .toast.show { transform: translateY(0); opacity: 1; }
     .toast.error { border-left-color: #e74c3c; }
     .toast.success { border-left-color: #2ecc71; }
 
-    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-    th, td { padding: 14px 12px; text-align: left; border-bottom: 1px solid rgba(0,0,0,0.06); }
-    body.dark th, body.dark td { border-color: rgba(255,255,255,0.06); }
-    th { font-weight: 600; opacity: 0.7; }
-    .badge { padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; display: inline-block; }
-    .badge-success { background: #d4edda; color: #155724; }
-    .badge-warning { background: #fff3cd; color: #856404; }
-    .action-btn { padding: 8px 16px; border-radius: 8px; border: none; cursor: pointer; font-weight: 500; transition: background 0.2s; }
-    .action-btn.approve { background: #2ecc71; color: white; margin-right: 8px; }
-    .action-btn.approve:hover { background: #27ae60; }
-    .action-btn.reject { background: #e74c3c; color: white; }
-    .action-btn.reject:hover { background: #c0392b; }
-    .logout-link { text-align: right; margin-bottom: 10px; }
-    .logout-link a { color: var(--primary); text-decoration: none; font-weight: 600; }
-    .skeleton { background: linear-gradient(90deg, rgba(0,0,0,0.04) 25%, rgba(0,0,0,0.08) 50%, rgba(0,0,0,0.04) 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 8px; }
-    body.dark .skeleton { background: linear-gradient(90deg, rgba(255,255,255,0.04) 25%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.04) 75%); }
-    @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+    /* Language/Theme toggles (in login) */
+    .toggles {
+      position: absolute; top: 20px; right: 20px; display: flex; gap: 10px;
+    }
+    .icon-btn {
+      background: var(--glass-bg); backdrop-filter: blur(16px);
+      border: 1px solid rgba(255,255,255,0.2); border-radius: 30px;
+      padding: 8px 16px; cursor: pointer; font-size: 14px;
+      display: flex; align-items: center; gap: 6px;
+      color: inherit; transition: background 0.3s;
+    }
+    body.dark .icon-btn {
+      background: var(--glass-bg-dark); border-color: rgba(255,255,255,0.05);
+    }
+
+    @media (max-width: 768px) {
+      .login-card, .dashboard-card { padding: 25px; }
+      .toggles { top: 10px; right: 10px; flex-direction: column; }
+      table { font-size: 13px; }
+      th, td { padding: 10px 8px; }
+    }
   </style>
 </head>
 <body>
+
+  <!-- Toggles (visible only on login screen) -->
+  <div class="toggles" id="togglesBar">
+    <button class="icon-btn" id="langToggle"><i class="fas fa-globe"></i> <span>AR</span></button>
+    <button class="icon-btn" id="themeToggle"><i class="fas fa-moon"></i> <span>Dark</span></button>
+  </div>
 
   <div class="admin-container">
     <!-- Login Form -->
@@ -96,48 +198,54 @@
       <div class="logo">
         <i class="fas fa-shield-alt"></i>
         <h1>Zentor Admin</h1>
-        <p style="opacity:0.7;">Teacher Approval Panel</p>
+        <p data-lang="admin-subtitle">Teacher Approval Panel</p>
       </div>
       <form id="adminLoginForm">
         <div class="form-group">
-          <label>Email</label>
+          <label data-lang="email">Email</label>
           <div class="input-wrapper">
             <i class="fas fa-envelope left-icon"></i>
-            <input type="email" id="adminEmail" value="Admin@gmail.com" required>
+            <input type="email" id="adminEmail" placeholder="admin@example.com" required>
           </div>
         </div>
         <div class="form-group">
-          <label>Password</label>
+          <label data-lang="password">Password</label>
           <div class="input-wrapper">
             <i class="fas fa-lock left-icon"></i>
-            <input type="password" id="adminPassword" value="Admin123" required>
+            <input type="password" id="adminPassword" placeholder="••••••••" required>
             <i class="toggle-password fas fa-eye" id="toggleAdminPassword"></i>
           </div>
         </div>
         <div class="error-message" id="loginError"></div>
-        <button type="submit" class="btn"><i class="fas fa-sign-in-alt"></i> Login</button>
+        <button type="submit" class="btn" id="loginBtn">
+          <i class="fas fa-sign-in-alt"></i> <span data-lang="login">Login</span>
+        </button>
       </form>
     </div>
 
     <!-- Dashboard Section (hidden initially) -->
     <div id="dashboardSection" class="dashboard-card" style="display: none;">
-      <div class="logout-link"><a href="#" id="logoutLink"><i class="fas fa-sign-out-alt"></i> Logout</a></div>
-      <h2><i class="fas fa-users"></i> Teacher Registrations</h2>
+      <div class="header-bar">
+        <h2><i class="fas fa-users-cog"></i> <span data-lang="teacher-registrations">Teacher Registrations</span></h2>
+        <div style="display:flex; align-items:center; gap:10px;">
+          <button class="icon-btn" id="langToggleDash"><i class="fas fa-globe"></i> <span>AR</span></button>
+          <button class="icon-btn" id="themeToggleDash"><i class="fas fa-moon"></i> <span>Dark</span></button>
+          <button class="logout-btn" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> <span data-lang="logout">Logout</span></button>
+        </div>
+      </div>
       <div id="teachersTableContainer">
-        <!-- Skeleton loading -->
-        <div class="skeleton" style="height: 40px; width: 100%; margin-bottom: 12px;"></div>
-        <div class="skeleton" style="height: 40px; width: 100%; margin-bottom: 12px;"></div>
-        <div class="skeleton" style="height: 40px; width: 100%; margin-bottom: 12px;"></div>
+        <!-- Skeleton loading will appear here -->
       </div>
     </div>
   </div>
 
+  <!-- Toast -->
   <div class="toast" id="toast"></div>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
     import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
-    import { getFirestore, collection, getDocs, doc, setDoc, deleteDoc, query, where, collectionGroup } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+    import { getFirestore, collection, getDocs, doc, setDoc, deleteDoc, query, collectionGroup, getDoc } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyBOd-cHm8J84BMwdlP8a3zOVlK8sboUFj0",
@@ -153,6 +261,7 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
 
+    // ---------- HELPERS ----------
     const toast = document.getElementById('toast');
     function showToast(msg, type='success') {
       toast.innerHTML = `<i class="fas ${type==='success'?'fa-check-circle':'fa-exclamation-circle'}"></i> ${msg}`;
@@ -160,17 +269,126 @@
       setTimeout(() => toast.classList.remove('show'), 5000);
     }
 
-    const loginSection = document.getElementById('loginSection');
-    const dashboardSection = document.getElementById('dashboardSection');
-    const loginError = document.getElementById('loginError');
+    // Language
+    let currentLang = localStorage.getItem('zentor_lang') || 'en';
+    const langMap = {
+      en: {
+        'admin-subtitle': 'Teacher Approval Panel',
+        'email': 'Email',
+        'password': 'Password',
+        'login': 'Login',
+        'logout': 'Logout',
+        'teacher-registrations': 'Teacher Registrations',
+        'loading': 'Loading...',
+        'no-teachers': 'No teacher registrations found.',
+        'error-loading': 'Failed to load teachers. Check console.',
+        'approve-success': 'Teacher activated successfully!',
+        'deactivate-success': 'Teacher deactivated.',
+        'operation-failed': 'Operation failed: ',
+        'invalid-credentials': 'Invalid email or password.',
+        'unauthorized': 'Unauthorized: Not an admin account.',
+        'welcome': 'Welcome, Admin!',
+        'logged-out': 'Logged out.',
+        'pending': 'Pending',
+        'activated': 'Activated',
+        'approve': 'Approve',
+        'deactivate': 'Deactivate'
+      },
+      ar: {
+        'admin-subtitle': 'لوحة تفعيل المعلمين',
+        'email': 'البريد الإلكتروني',
+        'password': 'كلمة المرور',
+        'login': 'تسجيل الدخول',
+        'logout': 'تسجيل الخروج',
+        'teacher-registrations': 'تسجيلات المعلمين',
+        'loading': 'جاري التحميل...',
+        'no-teachers': 'لا يوجد معلمون مسجلون.',
+        'error-loading': 'فشل تحميل المعلمين. راجع السجل.',
+        'approve-success': 'تم تفعيل المعلم بنجاح!',
+        'deactivate-success': 'تم تعطيل المعلم.',
+        'operation-failed': 'فشلت العملية: ',
+        'invalid-credentials': 'بريد إلكتروني أو كلمة مرور غير صحيحة.',
+        'unauthorized': 'غير مصرح: ليس حساب مسؤول.',
+        'welcome': 'مرحبًا بك أيها المسؤول!',
+        'logged-out': 'تم تسجيل الخروج.',
+        'pending': 'قيد الانتظار',
+        'activated': 'مفعل',
+        'approve': 'تفعيل',
+        'deactivate': 'تعطيل'
+      }
+    };
 
-    // Toggle password
-    document.getElementById('toggleAdminPassword').addEventListener('click', function(){
+    function t(key) {
+      return langMap[currentLang] && langMap[currentLang][key] ? langMap[currentLang][key] : key;
+    }
+
+    function applyLanguageUI() {
+      document.querySelectorAll('[data-lang]').forEach(el => {
+        const key = el.getAttribute('data-lang');
+        el.textContent = t(key);
+      });
+      // Update toggle buttons text
+      document.querySelectorAll('#langToggle span, #langToggleDash span').forEach(span => {
+        span.textContent = currentLang === 'en' ? 'AR' : 'EN';
+      });
+      // Update placeholders
+      const emailInput = document.getElementById('adminEmail');
+      if (emailInput) emailInput.placeholder = currentLang === 'en' ? 'admin@example.com' : 'admin@example.com';
+      // RTL/LTR
+      document.documentElement.lang = currentLang;
+      document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+      localStorage.setItem('zentor_lang', currentLang);
+    }
+
+    // Theme
+    function applyTheme() {
+      const saved = localStorage.getItem('zentor_theme') || 'light';
+      if (saved === 'dark') {
+        document.body.classList.add('dark');
+        document.querySelectorAll('#themeToggle i, #themeToggleDash i').forEach(i => i.className = 'fas fa-sun');
+        document.querySelectorAll('#themeToggle span, #themeToggleDash span').forEach(s => s.textContent = 'Light');
+      } else {
+        document.body.classList.remove('dark');
+        document.querySelectorAll('#themeToggle i, #themeToggleDash i').forEach(i => i.className = 'fas fa-moon');
+        document.querySelectorAll('#themeToggle span, #themeToggleDash span').forEach(s => s.textContent = 'Dark');
+      }
+    }
+
+    function toggleTheme() {
+      const isDark = document.body.classList.toggle('dark');
+      localStorage.setItem('zentor_theme', isDark ? 'dark' : 'light');
+      applyTheme();
+    }
+
+    // Initialize language and theme
+    applyLanguageUI();
+    applyTheme();
+
+    // Event listeners for toggles (login + dashboard)
+    document.getElementById('langToggle').addEventListener('click', () => {
+      currentLang = currentLang === 'en' ? 'ar' : 'en';
+      applyLanguageUI();
+    });
+    document.getElementById('langToggleDash').addEventListener('click', () => {
+      currentLang = currentLang === 'en' ? 'ar' : 'en';
+      applyLanguageUI();
+    });
+    document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+    document.getElementById('themeToggleDash').addEventListener('click', toggleTheme);
+
+    // Toggle password visibility
+    document.getElementById('toggleAdminPassword').addEventListener('click', function() {
       const p = document.getElementById('adminPassword');
       p.type = p.type === 'password' ? 'text' : 'password';
       this.classList.toggle('fa-eye');
       this.classList.toggle('fa-eye-slash');
     });
+
+    // ---------- LOGIC ----------
+    const loginSection = document.getElementById('loginSection');
+    const dashboardSection = document.getElementById('dashboardSection');
+    const loginError = document.getElementById('loginError');
+    const togglesBar = document.getElementById('togglesBar');
 
     // Login form
     document.getElementById('adminLoginForm').addEventListener('submit', async (e) => {
@@ -178,172 +396,182 @@
       const email = document.getElementById('adminEmail').value.trim();
       const password = document.getElementById('adminPassword').value;
       loginError.style.display = 'none';
-      const btn = e.target.querySelector('button');
-      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Logging in...';
+      const btn = document.getElementById('loginBtn');
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ' + t('loading');
       btn.disabled = true;
+
       try {
         const cred = await signInWithEmailAndPassword(auth, email, password);
+        // Check for admin email (case insensitive)
         if (cred.user.email.toLowerCase() !== 'admin@gmail.com') {
           await signOut(auth);
-          throw new Error('Unauthorized: Not an admin account.');
+          throw new Error('unauthorized');
         }
-        // Success - will be handled by onAuthStateChanged
-        showToast('Welcome, Admin!', 'success');
+        // success -> onAuthStateChanged will handle UI
+        showToast(t('welcome'), 'success');
       } catch (err) {
-        let msg = err.message;
+        let msg;
         if (err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password') {
-          msg = 'Invalid email or password.';
+          msg = t('invalid-credentials');
         } else if (err.code === 'auth/invalid-email') {
-          msg = 'Invalid email format.';
+          msg = t('invalid-credentials');
+        } else if (err.message === 'unauthorized') {
+          msg = t('unauthorized');
+        } else {
+          msg = err.message;
         }
         loginError.textContent = msg;
         loginError.style.display = 'block';
         showToast(msg, 'error');
       } finally {
-        btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Login';
+        btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> ' + t('login');
         btn.disabled = false;
       }
     });
 
     // Logout
-    document.getElementById('logoutLink').addEventListener('click', async (e) => {
-      e.preventDefault();
+    document.getElementById('logoutBtn').addEventListener('click', async () => {
       await signOut(auth);
-      loginSection.style.display = 'block';
-      dashboardSection.style.display = 'none';
-      showToast('Logged out', 'success');
     });
 
-    // Fetch and display teachers
+    // Fetch teachers and render table
     async function loadTeachers() {
       const container = document.getElementById('teachersTableContainer');
-      container.innerHTML = '<div class="skeleton" style="height: 40px; width: 100%; margin-bottom: 12px;"></div>'.repeat(3);
+      container.innerHTML = '';
+      // Skeleton
+      for (let i=0; i<3; i++) {
+        container.innerHTML += '<div class="skeleton" style="height:40px; width:100%; margin-bottom:12px;"></div>';
+      }
+
       try {
-        // Fetch all teacher profiles using collectionGroup
+        // Use collectionGroup to fetch all teacher profiles
         const profileQuery = query(collectionGroup(db, 'profile'));
         const snapshot = await getDocs(profileQuery);
+
         const teachers = [];
-        
-        // Get all teacher UIDs and their profile data
         for (const docSnap of snapshot.docs) {
           const data = docSnap.data();
-          // Extract teacher UID from path: teachers/{uid}/settings/profile
+          // path: teachers/{uid}/settings/profile
           const pathParts = docSnap.ref.path.split('/');
-          const teacherUid = pathParts[1]; // teachers/{uid}/settings/profile
-          
-          // Check if preferences exists (activated)
+          const teacherUid = pathParts[1];
+
+          // Check if activated (preferences doc exists)
           const prefRef = doc(db, `teachers/${teacherUid}/settings/preferences`);
           const prefSnap = await getDoc(prefRef);
           const activated = prefSnap.exists();
-          
+
           teachers.push({
             uid: teacherUid,
-            name: data.name || 'Unknown',
+            name: data.name || '---',
             email: data.email || '',
-            subject: data.subject || 'N/A',
-            grades: data.grades || [],
+            subject: data.subject || '---',
+            grades: Array.isArray(data.grades) ? data.grades : [],
             createdAt: data.createdAt || '',
             approved: activated
           });
         }
-        
+
         // Sort by creation date descending
         teachers.sort((a,b) => (b.createdAt || '').localeCompare(a.createdAt || ''));
-        
+
         if (teachers.length === 0) {
-          container.innerHTML = '<div style="text-align:center; padding:40px; opacity:0.6;">No teacher registrations found.</div>';
+          container.innerHTML = `<div style="text-align:center; padding:40px; opacity:0.6;">${t('no-teachers')}</div>`;
           return;
         }
-        
+
         let tableHTML = `
           <table>
             <thead>
               <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Subject</th>
-                <th>Grades</th>
-                <th>Status</th>
-                <th>Actions</th>
+                <th>${t('Name')}</th>
+                <th>${t('Email')}</th>
+                <th>${t('Subject')}</th>
+                <th>${t('Grades')}</th>
+                <th>${t('Status')}</th>
+                <th>${t('Actions')}</th>
               </tr>
             </thead>
             <tbody>
         `;
-        
+
         teachers.forEach(t => {
-          const statusBadge = t.approved 
-            ? '<span class="badge badge-success">Activated</span>' 
-            : '<span class="badge badge-warning">Pending</span>';
-          const actionBtns = t.approved 
-            ? '<button class="action-btn reject" data-uid="'+t.uid+'">Deactivate</button>'
-            : '<button class="action-btn approve" data-uid="'+t.uid+'">Approve</button>';
-          
+          const statusBadge = t.approved
+            ? `<span class="badge badge-success">${t('activated')}</span>`
+            : `<span class="badge badge-warning">${t('pending')}</span>`;
+          const actionBtn = t.approved
+            ? `<button class="action-btn reject" data-uid="${t.uid}">${t('deactivate')}</button>`
+            : `<button class="action-btn approve" data-uid="${t.uid}">${t('approve')}</button>`;
+
           tableHTML += `
             <tr>
               <td>${t.name}</td>
               <td>${t.email}</td>
               <td>${t.subject}</td>
-              <td>${t.grades.join(', ')}</td>
+              <td>${t.grades.join(', ') || '---'}</td>
               <td>${statusBadge}</td>
-              <td>${actionBtns}</td>
+              <td>${actionBtn}</td>
             </tr>
           `;
         });
-        
+
         tableHTML += '</tbody></table>';
         container.innerHTML = tableHTML;
-        
-        // Add event listeners to approve/deactivate buttons
+
+        // Attach event listeners
         document.querySelectorAll('.action-btn.approve').forEach(btn => {
           btn.addEventListener('click', async (e) => {
             const uid = e.target.getAttribute('data-uid');
-            await activateTeacher(uid, true);
+            await toggleTeacherActivation(uid, true);
           });
         });
         document.querySelectorAll('.action-btn.reject').forEach(btn => {
           btn.addEventListener('click', async (e) => {
             const uid = e.target.getAttribute('data-uid');
-            await activateTeacher(uid, false);
+            await toggleTeacherActivation(uid, false);
           });
         });
-        
+
       } catch (error) {
         console.error(error);
-        container.innerHTML = '<div style="text-align:center; padding:40px; color:red;">Failed to load teachers. Check console.</div>';
-        showToast('Error loading teachers', 'error');
-      }
-    }
-    
-    async function activateTeacher(uid, activate) {
-      try {
-        const prefRef = doc(db, `teachers/${uid}/settings/preferences`);
-        if (activate) {
-          await setDoc(prefRef, { activatedAt: new Date().toISOString() });
-          showToast('Teacher activated successfully!', 'success');
-        } else {
-          await deleteDoc(prefRef);
-          showToast('Teacher deactivated.', 'success');
-        }
-        loadTeachers(); // Refresh list
-      } catch (error) {
-        console.error(error);
-        showToast('Operation failed: ' + error.message, 'error');
+        container.innerHTML = `<div style="text-align:center; padding:40px; color:#e74c3c;">${t('error-loading')}</div>`;
+        showToast(t('error-loading'), 'error');
       }
     }
 
-    // Auth state listener
+    async function toggleTeacherActivation(uid, activate) {
+      const prefRef = doc(db, `teachers/${uid}/settings/preferences`);
+      try {
+        if (activate) {
+          await setDoc(prefRef, { activatedAt: new Date().toISOString() });
+          showToast(t('approve-success'), 'success');
+        } else {
+          await deleteDoc(prefRef);
+          showToast(t('deactivate-success'), 'success');
+        }
+        // Refresh table
+        loadTeachers();
+      } catch (err) {
+        console.error(err);
+        showToast(t('operation-failed') + err.message, 'error');
+      }
+    }
+
+    // Auth state observer
     onAuthStateChanged(auth, (user) => {
       if (user && user.email.toLowerCase() === 'admin@gmail.com') {
         // Admin logged in
         loginSection.style.display = 'none';
         dashboardSection.style.display = 'block';
+        togglesBar.style.display = 'none';
         loadTeachers();
       } else {
         // Not admin or logged out
         loginSection.style.display = 'block';
         dashboardSection.style.display = 'none';
+        togglesBar.style.display = 'flex';
       }
     });
+
   </script>
 </body>
 </html>
